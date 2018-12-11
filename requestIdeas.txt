@@ -1,0 +1,27 @@
+
+1. Lister toutes les facs
+2. Lister tout les élèves d'une fac
+3. Lister tout les professeurs d'une fac
+4. lister les disciplines d'une fac
+5. Lister toutes les matières enseignées dans une fac
+6. Donner le nombre de café consommé
+7. Donner la moyenne de café bus par les élèves
+8. Donner la moyenne de café bus par les professeurs
+9. Lister tout les clubs
+10. Afficher le club avec le plus de membres
+11. Afficher la fac avec le plus haut budget
+12. Afficher la moyenne d'âge des élèves d'une fac
+13. Afficher la fac avec une majorité de matières scientifique (Math, Physique, SVT)
+14. Afficher le club du plus grand buveurs de café
+15. Sélectionner le plus vieux club 
+16. Récupérer la liste des profs avec leurs élèves.
+
+
+
+Routes :
+
+/facs
+/facs/nomFac/élèves
+/facs/nomFac/élèves/Jacky
+/facs/nomFac/clubs/clubDeLecture
+/facs/nomFac/professeurs/jean-philippe
