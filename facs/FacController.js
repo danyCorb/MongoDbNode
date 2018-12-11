@@ -6,10 +6,10 @@ const bodyParser = require('body-parser')
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-const ENTITY_NAME = "item";
-const ENTITY_NAME_PLURAL = "items";
-const ENTITY_FILE_PATH = "items/items.json"
-const FIELDS = ["label", "image", "description"];
+const ENTITY_NAME = "fac";
+const ENTITY_NAME_PLURAL = "facs";
+const ENTITY_FILE_PATH = "facs/facs.json"
+const FIELDS = ["nom", "budget", "disciplines", "clubs", "eleves", "profs", "nb_machine_cafe"];
 
 // a middleware sub-stack shows request info for any type of HTTP request to the /user/:id path
 router.use('/', function(req, res, next) {
