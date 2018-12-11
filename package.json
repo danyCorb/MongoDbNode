@@ -1,0 +1,23 @@
+{
+  "name": "mongodbnode",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danyCorb/MongoDbNode.git"
+  },
+  "author": "Antonin Douillard, Corentin Dupont, Mathis Aubry, Thibaud Brangerieau, Dany Corbineau",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/danyCorb/MongoDbNode/issues"
+  },
+  "homepage": "https://github.com/danyCorb/MongoDbNode#readme",
+  "dependencies": {
+    "express": "^4.16.4",
+    "mongodb": "^3.1.10"
+  }
+}
