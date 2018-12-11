@@ -1,10 +1,16 @@
 const mongoose = require('mongoose');
 
+var users = [
+    {name:"dev", password:"Mongodb44@!"},
+    {name:"prof", password:"Mongodb77@!"},
+    {name:"stagiaire", password:"Mongodb90@!"}
+]
+
 //Connection URL
 const url = 'mongodb://localhost:27017'
 
 //Database Name
-const dbName = 'tpdb'
+const dbName = 'you_cafe'
 console.log(`${url}/${dbName}`);
 
 mongoose.connect(`${url}/${dbName}`, { useNewUrlParser: true });
