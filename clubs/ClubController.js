@@ -41,7 +41,7 @@ router.put('/:id', function (req, response) {
 
 // GETS ALL
 router.get('/', function (req, response) {
-  MainController.selectAll(ENTITY_NAME, req, response);
+  MainController.selectAll(ENTITY_NAME, response);
 });
 
 module.exports = router;

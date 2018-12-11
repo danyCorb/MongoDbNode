@@ -22,27 +22,27 @@ router.use('/', function(req, res, next) {
 
 // CREATE
 router.post('/', function (req, response) {
-  MainController.create(ENTITY_NAME, ENTITY_NAME_PLURAL, ENTITY_FILE_PATH, req, response, FIELDS);
+  MainController.create(ENTITY_NAME, req, response);
 });
 
 // GET ONE BY ID
 router.get('/:id', function (req, response) {
-  MainController.select(ENTITY_NAME, ENTITY_NAME_PLURAL, ENTITY_FILE_PATH, req, response);
+  MainController.select(ENTITY_NAME, req, response);
 });
 
 // DELETE BY ID
 router.delete('/:id', function (req, response) {
-  MainController.delet(ENTITY_NAME, ENTITY_NAME_PLURAL, ENTITY_FILE_PATH, req, response);
+  MainController.delet(ENTITY_NAME, req, response);
 });
 
 // UPDATE ONE BY ID
 router.put('/:id', function (req, response) {
-  MainController.update(ENTITY_NAME, ENTITY_NAME_PLURAL, ENTITY_FILE_PATH, req, response, FIELDS);
+  MainController.update(ENTITY_NAME, req, response);
 });
 
 // GETS ALL
 router.get('/', function (req, response) {
-  MainController.selectAll(ENTITY_NAME, ENTITY_NAME_PLURAL, ENTITY_FILE_PATH, req, response);
+  MainController.selectAll(ENTITY_NAME, response);
 });
 
 module.exports = router;
