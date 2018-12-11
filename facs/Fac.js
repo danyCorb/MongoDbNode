@@ -11,7 +11,7 @@ var FacSchema = new mongoose.Schema({
     addresse:Object,
     directeur:Object
 });
-mongoose.model('Fac', FacSchema);
+mongoose.model('Fac', FacSchema, 'facs');
 
 module.exports = {
   model: mongoose.model('Fac'),

@@ -6,7 +6,7 @@ var ClubSchema = new mongoose.Schema({
   date_creation: Date,
   eleves: Array
 });
-mongoose.model('Club', ClubSchema);
+mongoose.model('Club', ClubSchema, 'clubs');
 
 module.exports = {
   model: mongoose.model('Club'),

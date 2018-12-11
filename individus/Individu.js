@@ -10,7 +10,7 @@ var IndividuSchema = new mongoose.Schema({
   salaire:Number,
   type:String
 });
-mongoose.model('Individu', IndividuSchema);
+mongoose.model('Individu', IndividuSchema, 'individus');
 
 module.exports = {
   model: mongoose.model('Individu'),
