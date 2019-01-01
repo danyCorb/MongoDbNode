@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<head>
+    <title>You Cafe</title>
+</head>
+<body>
+<h1>Bienvenu sur YouCafe</h1>
+<h2>Facs</h2>
+<h3><a href="/facs/">GetAll</a></h3>
+
+<h3>Create</h3>
+<form action="/facs/" method="POST">
+    <input type="text" name="nom" placeholder="nom"/>
+    <input type="number" name="buget" placeholder="buget"/>
+    <input type="number" name="nb_machine_cafe"  placeholder="nb machine cafe"/>
+    <input type="submit" value="send"/>
+</form>
+
+<hr>
+<h2>Club</h2>
+<h3><a href="/clubs/">GetAll</a></h3>
+<h3>Create</h3>
+<form action="/clubs/" method="POST">
+    <input type="text" name="nom" placeholder="nom"/>
+    <input type="date" name="date_creation"  placeholder="date creation"/>
+    <input type="submit" value="send"/>
+</form>
+<hr>
+<h2>Indivdus</h2>
+<h3><a href="/individus/">GetAll</a></h3>
+<h3>Create</h3>
+<form action="/individus/" method="POST">
+    <input type="text" name="nom" placeholder="nom"/>
+    <input type="text" name="prenom"  placeholder="prenom"/>
+    <input type="number" name="age"  placeholder="age"/>
+    <input type="number" name="nb_cafe"  placeholder="nb cafe"/>
+    <input type="string" name="sexe"  placeholder="sex"/>
+    <input type="number" name="salaire"  placeholder="salaire"/>
+    <input type="submit" value="send"/>
+</form>
+
+<hr>
+<a href="/rqt1">Fac avec un budget sup à 100 </a><br/>
+<a href="/rqt2">Fac par ordre de café </a><br/>
+<a href="/rqt3">Nombre d'élève par prof pour chaque Fac</a><br/>
+<a href="/rqt4">Fac avec élèves avec le plus gros nb de café</a><br/>
+<a href="/rqt5">Clubs les plus vieux (+30 ans) avec dans le nom "en" et Min 5 étudiants</a><br/>
+<script type="text/javascript">
+</script>
+</body>
+</html>

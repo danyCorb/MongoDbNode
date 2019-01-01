@@ -16,4 +16,7 @@ app.use('/individus', IndividuController);
 const FacController = require('./facs/FacController');
 app.use('/facs', FacController);
 
+const IndexRouter = require('./index/IndexRouter.js');
+app.use('/', IndexRouter);
+
 module.exports = app;
