@@ -7,13 +7,13 @@ const db = require('./db');
  * Routes
  */
 
-const ItemController = require('./items/ItemController');
-app.use('/items', ItemController);
+const ClubController = require('./clubs/ClubController');
+app.use('/clubs', ClubController);
 
-const UserController = require('./users/UserController');
-app.use('/users', UserController);
+const IndividuController = require('./individus/IndividuController');
+app.use('/individus', IndividuController);
 
-const ListController = require('./lists/ListController');
-app.use('/lists', ListController);
+const FacController = require('./facs/FacController');
+app.use('/facs', FacController);
 
 module.exports = app;

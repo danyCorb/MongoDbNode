@@ -7,10 +7,10 @@ var users = [
 ]
 
 //Connection URL
-const url = 'mongodb://localhost:27017'
+const url = 'mongodb://10.44.100.185:27017'
 
 //Database Name
-const dbName = 'you_cafe'
+const dbName = 'fac'
 console.log(`${url}/${dbName}`);
 
 mongoose.connect(`${url}/${dbName}`, { useNewUrlParser: true });

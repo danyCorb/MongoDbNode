@@ -1,39 +1,49 @@
-var faker = require('faker');
-var genders = ['homme', 'femme'];
-var matieres = ['anglais', 'chinois', 'espagnol', 'allemand', 'mathematiques', 'physique', 'science de la vie', 'informatique', 'droits', 'economie', 'phylosophie', 'sociologie', 'psychologie'];
-var club_names = ['handball', 'football', 'baseball', 'natation', 'echec', 'esport', 'dessin', 'peinture', 'video', 'audiovisuel', 'musique', 'big band', 'orchestre', 'fanfare'];
-var disciplines = ['droit', 'economie - gestion - management', 'enseignement', 'genie civil', 'international', 'lettre - langue - communication', 'mathematiques', 'mechanique - materiaux', 'numerique - electronique', 'physique - chimie - genie des procédés', 'qualité - logistique - maintenant', 'santé', 'sciences humaine et sociales', 'sciences de la terre et de l\'univers', 'science de la vie', 'staps'];
+const faker = require('faker');
+const mongoose = require('mongoose');
 
-var eleves = [];
-var profs = [];
-var clubs = [];
-var facs = [];
-var individus = [];
+const mongoDbClient = require('./db');
+const Club = require('./clubs/Club').model;
+const Individu = require('./individus/Individu').model;
+const Fac = require('./facs/Fac').model;
+
+let genders = ['homme', 'femme'];
+let matieres = ['anglais', 'chinois', 'espagnol', 'allemand', 'mathematiques', 'physique', 'science de la vie', 'informatique', 'droits', 'economie', 'phylosophie', 'sociologie', 'psychologie'];
+let club_names = ['handball', 'football', 'baseball', 'natation', 'echec', 'esport', 'dessin', 'peinture', 'video', 'audiovisuel', 'musique', 'big band', 'orchestre', 'fanfare'];
+let disciplines = ['droit', 'economie - gestion - management', 'enseignement', 'genie civil', 'international', 'lettre - langue - communication', 'mathematiques', 'mechanique - materiaux', 'numerique - electronique', 'physique - chimie - genie des procédés', 'qualité - logistique - maintenant', 'santé', 'sciences humaine et sociales', 'sciences de la terre et de l\'univers', 'science de la vie', 'staps'];
+
+let eleves = [];
+let elevesIds = [];
+let profs = [];
+let profsIds = [];
+let clubs = [];
+let clubsIds = [];
+let facs = [];
+let individus = [];
 
 // boucle de création des facs
 for (a = 0; a < 10; a++) {
-    var eleves_fac = [];
-    var profs_fac = [];
-    var clubs_fac = [];
+    let eleves_fac = [];
+    let profs_fac = [];
+    let clubs_fac = [];
 
-    var nb_eleve_fac = faker.random.number({
+    let nb_eleve_fac = faker.random.number({
         'min': 200,
         'max': 4000
     });
 
-    var nb_prof_fac = faker.random.number({
+    let nb_prof_fac = faker.random.number({
         'min': 10,
         'max': 242
     });
 
-    var nb_club_fac = faker.random.number({
+    let nb_club_fac = faker.random.number({
         'min': 2,
         'max': 14
     });
 
     // boucle de création des élèves
     for (b = 0; b < nb_eleve_fac; b++) {
-        var eleve = {
+        let eleve = {
             "type": "eleve",
             "nom": faker.name.lastName(),
             "prenom": faker.name.firstName(),
@@ -56,12 +66,21 @@ for (a = 0; a < 10; a++) {
             }),
             "sexe": faker.random.arrayElement(genders)
         }
-        eleves.push(eleve);
-        eleves_fac.push(eleve);
+
+        Individu.create(eleve, (err, obj) => {
+          if (err) {
+            console.log(err);
+          }else{
+            console.log("successfully inserted individu ", obj);
+            eleves.push(obj);
+            eleves_fac.push(obj);
+            elevesIds.push(obj._id);
+          }
+        });
     }
     // boucle de création des profs
     for (c = 0; c < nb_prof_fac; c++) {
-        var prof = {
+        let prof = {
             "type": "prof",
             "nom": faker.name.lastName(),
             "prenom": faker.name.firstName(),
@@ -89,8 +108,18 @@ for (a = 0; a < 10; a++) {
                 'max': 3000
             }),
         }
-        profs.push(prof);
-        profs_fac.push(prof);
+
+        Individu.create(prof, (err, obj) => {
+          if (err) {
+            console.log(err);
+          }else{
+            console.log("successfully inserted individu ", obj);
+            profs.push(obj);
+            profs_fac.push(obj);
+            profsIds.push(obj._id);
+          }
+        });
+       
     }
     // boucle de création des clubs
     for (d = 0; d < nb_club_fac; d++) {
@@ -104,30 +133,39 @@ for (a = 0; a < 10; a++) {
         for (e = 0; e < nb_eleve; e++) {
             eleves_club.push(faker.random.arrayElement(eleves_fac));
         }
-        var club = {
+        let club = {
             "nom": faker.random.arrayElement(club_names),
             "president": faker.random.arrayElement(eleves_fac),
             "date_creation": faker.date.between(new Date('1961-12-17T03:24:00'), new Date('2018-12-17T03:24:00')),
             "eleves": eleves_club
         };
-        clubs.push(club);
-        clubs_fac.push(club);
+
+        Club.create(club, (err, obj) => {
+          if (err) {
+            console.log(err);
+          }else{
+            console.log("successfully inserted club ", obj);
+            clubs.push(obj);
+            clubs_fac.push(obj);
+            clubsIds.push(obj._id);
+          }
+        });
 
     }
 
     // attribution des disciplines pour chaque fac
-    var nb_disciplines = faker.random.number({
+    let nb_disciplines = faker.random.number({
         'min': 2,
         'max': 16
     });
-    var disciplines_fac = [];
+    let disciplines_fac = [];
 
     for (f = 0; f < nb_disciplines; f++) {
         disciplines_fac.push(faker.random.arrayElement(disciplines));
     }
     // creation de facs
-    var city = faker.address.city();
-    var fac = {
+    let city = faker.address.city();
+    let fac = {
         "nom": "University of " + city,
         "adresse": {
             "ville": city,
@@ -163,7 +201,17 @@ for (a = 0; a < 10; a++) {
             'max': 30
         })
     }
-    facs.push(fac);
+    
+    Club.create(fac, (err, obj) => {
+      if (err) {
+        console.log(err);
+      }else{
+        console.log("successfully inserted club ", obj);
+        facs.push(obj);
+      }
+    });
+
+    
 }
 
 individus = profs.concat(eleves);
@@ -171,4 +219,101 @@ individus = profs.concat(eleves);
 console.log(individus);
 console.log(clubs);
 console.log(facs);
+
+// mongoDbClient.auth("", "")
+
+
+  /**
+   *  EMPTY DATABASE
+   */
+
+  function dropAllCollection(){
+    dropClubCollection();
+  }
+
+  function dropClubCollection(){
+    mongoose.connection.dropCollection('clubs', (err, result) => {
+      dropIndividuCollection();
+
+      if(!err){
+        console.log("drop collection success : ", result);
+      }else{
+        console.log(err);
+      }
+    });
+  }
+
+  function dropIndividuCollection(){
+    mongoose.connection.dropCollection('individus', (err, result) => {
+      dropFacCollection();
+      if(!err){
+        console.log("drop collection success : ", result);
+      }else{
+        console.log(err);
+      }
+    });
+  }
+
+  function dropFacCollection(){
+    mongoose.connection.dropCollection('facs', (err, result) => {
+      if(!err){
+        console.log("drop collection success : ", result);
+      }else{
+        console.log(err);
+      }
+    });
+  }
+
+  dropAllCollection();
+
+  /**
+   * Insert all data in collections
+   */
+
+  function addAllData(){
+    addAllFacs()
+  }
+
+  function addAllFacs(){
+    Fac.create(facs, (err, obj) => {
+      if (err) {
+        console.log(err);
+      }else{
+        console.log("successfully inserted all facs document !");
+        addAllIndividus();
+      }
+    });
+  }
+
+  function addAllIndividus(){
+    Individu.create(individus, (err, obj) => {
+      if (err) {
+        console.log(err);
+      }else{
+        console.log("successfully inserted all individus document !");
+        addAllClubs();
+      }
+    });
+  }
+
+  function addAllClubs(){
+    Club.create(facs, (err, obj) => {
+      if (err) {
+        console.log(err);
+      }else{
+        console.log("successfully inserted all clubs document !");
+        addAllIndividus();
+      }
+    });
+  }
+
+  addAllData();
+
+
+
+
+
+
+
+
 

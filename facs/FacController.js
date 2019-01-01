@@ -6,10 +6,10 @@ const bodyParser = require('body-parser')
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-const ENTITY_NAME = "item";
-const ENTITY_NAME_PLURAL = "items";
-const ENTITY_FILE_PATH = "items/items.json"
-const FIELDS = ["label", "image", "description"];
+const ENTITY_NAME = "fac";
+const ENTITY_NAME_PLURAL = "facs";
+const ENTITY_FILE_PATH = "facs/facs.json"
+const FIELDS = ["nom", "budget", "disciplines", "clubs", "eleves", "profs", "nb_machine_cafe"];
 
 // a middleware sub-stack shows request info for any type of HTTP request to the /user/:id path
 router.use('/', function(req, res, next) {
@@ -22,27 +22,27 @@ router.use('/', function(req, res, next) {
 
 // CREATE
 router.post('/', function (req, response) {
-  MainController.create(ENTITY_NAME, ENTITY_NAME_PLURAL, ENTITY_FILE_PATH, req, response, FIELDS);
+  MainController.create(ENTITY_NAME, req, response);
 });
 
 // GET ONE BY ID
 router.get('/:id', function (req, response) {
-  MainController.select(ENTITY_NAME, ENTITY_NAME_PLURAL, ENTITY_FILE_PATH, req, response);
+  MainController.select(ENTITY_NAME, req, response);
 });
 
 // DELETE BY ID
 router.delete('/:id', function (req, response) {
-  MainController.delet(ENTITY_NAME, ENTITY_NAME_PLURAL, ENTITY_FILE_PATH, req, response);
+  MainController.delet(ENTITY_NAME, req, response);
 });
 
 // UPDATE ONE BY ID
 router.put('/:id', function (req, response) {
-  MainController.update(ENTITY_NAME, ENTITY_NAME_PLURAL, ENTITY_FILE_PATH, req, response, FIELDS);
+  MainController.update(ENTITY_NAME, req, response);
 });
 
 // GETS ALL
 router.get('/', function (req, response) {
-  MainController.selectAll(ENTITY_NAME, ENTITY_NAME_PLURAL, ENTITY_FILE_PATH, req, response);
+  MainController.selectAll(ENTITY_NAME, response);
 });
 
 module.exports = router;
