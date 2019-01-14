@@ -20,20 +20,22 @@ let clubsIds = [];
 let facs = [];
 let individus = [];
 
+dropAllCollection();
+
 // boucle de création des facs
-for (a = 0; a < 10; a++) {
+for (a = 0; a < 3; a++) {
     let eleves_fac = [];
     let profs_fac = [];
     let clubs_fac = [];
 
     let nb_eleve_fac = faker.random.number({
-        'min': 200,
-        'max': 4000
+        'min': 10,
+        'max': 100
     });
 
     let nb_prof_fac = faker.random.number({
-        'min': 10,
-        'max': 242
+        'min': 5,
+        'max': 50
     });
 
     let nb_club_fac = faker.random.number({
@@ -41,7 +43,13 @@ for (a = 0; a < 10; a++) {
         'max': 14
     });
 
-    // boucle de création des élèves
+
+
+
+    /**
+     *  boucle de création des élèves
+    */
+    
     for (b = 0; b < nb_eleve_fac; b++) {
         let eleve = {
             "type": "eleve",
@@ -67,17 +75,21 @@ for (a = 0; a < 10; a++) {
             "sexe": faker.random.arrayElement(genders)
         }
 
-        Individu.create(eleve, (err, obj) => {
+        Individu.create(eleve, (err, res) => {
           if (err) {
             console.log(err);
           }else{
-            console.log("successfully inserted individu ", obj);
-            eleves.push(obj);
-            eleves_fac.push(obj);
-            elevesIds.push(obj._id);
+            console.log("successfully inserted eleve ", res._doc);
+            eleves.push(res._doc);
+            eleves_fac.push(res._doc);
+            elevesIds.push(res._doc._id);
           }
         });
     }
+
+
+
+
     // boucle de création des profs
     for (c = 0; c < nb_prof_fac; c++) {
         let prof = {
@@ -109,14 +121,14 @@ for (a = 0; a < 10; a++) {
             }),
         }
 
-        Individu.create(prof, (err, obj) => {
+        Individu.create(prof, (err, res) => {
           if (err) {
             console.log(err);
           }else{
-            console.log("successfully inserted individu ", obj);
-            profs.push(obj);
-            profs_fac.push(obj);
-            profsIds.push(obj._id);
+            console.log("successfully inserted prof ", res._doc);
+            profs.push(res._doc);
+            profs_fac.push(res._doc);
+            profsIds.push(res._doc._id);
           }
         });
        
@@ -140,14 +152,15 @@ for (a = 0; a < 10; a++) {
             "eleves": eleves_club
         };
 
-        Club.create(club, (err, obj) => {
+        Club.create(club, (err, res) => {
+          console.log("CREATE CLUB")
           if (err) {
             console.log(err);
           }else{
-            console.log("successfully inserted club ", obj);
-            clubs.push(obj);
-            clubs_fac.push(obj);
-            clubsIds.push(obj._id);
+            console.log("successfully inserted club ", res._doc);
+            clubs.push(res._doc);
+            clubs_fac.push(res._doc);
+            clubsIds.push(res._doc._id);
           }
         });
 
@@ -216,9 +229,9 @@ for (a = 0; a < 10; a++) {
 
 individus = profs.concat(eleves);
 
-console.log(individus);
-console.log(clubs);
-console.log(facs);
+console.log("INDIVIDUS : ", individus);
+console.log("CLUBS : ", clubs);
+console.log("FACS : ", facs);
 
 // mongoDbClient.auth("", "")
 
@@ -264,7 +277,6 @@ console.log(facs);
     });
   }
 
-  dropAllCollection();
 
   /**
    * Insert all data in collections
@@ -286,6 +298,7 @@ console.log(facs);
   }
 
   function addAllIndividus(){
+    console.log("ADD ALL INDIVIDUS : ", individus.length);
     Individu.create(individus, (err, obj) => {
       if (err) {
         console.log(err);
@@ -307,7 +320,7 @@ console.log(facs);
     });
   }
 
-  addAllData();
+  // addAllData();
 
 
 
