@@ -20,10 +20,18 @@ let clubsIds = [];
 let facs = [];
 let individus = [];
 
-dropAllCollection();
+cleanDB();
 
-// boucle de création des facs
-for (a = 0; a < 3; a++) {
+function generateFixtures()
+{
+
+  let nb_fac = faker.random.number({
+    'min': 2,
+    'max': 4
+  });
+    
+  // boucle de création des facs
+  for (a = 0; a < nb_fac; a++) {
     let eleves_fac = [];
     let profs_fac = [];
     let clubs_fac = [];
@@ -43,96 +51,24 @@ for (a = 0; a < 3; a++) {
         'max': 14
     });
 
-
-
-
     /**
      *  boucle de création des élèves
     */
-    
     for (b = 0; b < nb_eleve_fac; b++) {
-        let eleve = {
-            "type": "eleve",
-            "nom": faker.name.lastName(),
-            "prenom": faker.name.firstName(),
-            "age": faker.random.number({
-                'min': 17,
-                'max': 28
-            }),
-            "adresse": {
-                "ville": faker.address.city(),
-                "code_postal": faker.address.stateAbbr(),
-                "numero": faker.random.number({
-                    'min': 1,
-                    'max': 40
-                }),
-                "rue": faker.address.streetName()
-            },
-            "nb_cafe": faker.random.number({
-                'min': 0,
-                'max': 1000
-            }),
-            "sexe": faker.random.arrayElement(genders)
-        }
-
-        Individu.create(eleve, (err, res) => {
-          if (err) {
-            console.log(err);
-          }else{
-            console.log("successfully inserted eleve ", res._doc);
-            eleves.push(res._doc);
-            eleves_fac.push(res._doc);
-            elevesIds.push(res._doc._id);
-          }
-        });
+      let e = getEleve();
+      eleves.push(e);
+      eleves_fac.push(e);
+      elevesIds.push(e);
     }
-
-
-
 
     // boucle de création des profs
     for (c = 0; c < nb_prof_fac; c++) {
-        let prof = {
-            "type": "prof",
-            "nom": faker.name.lastName(),
-            "prenom": faker.name.firstName(),
-            "age": faker.random.number({
-                'min': 32,
-                'max': 64
-            }),
-            "adresse": {
-                "ville": faker.address.city(),
-                "code_postal": faker.address.stateAbbr(),
-                "numero": faker.random.number({
-                    'min': 1,
-                    'max': 40
-                }),
-                "rue": faker.address.streetName()
-            },
-            "nb_cafe": faker.random.number({
-                'min': 0,
-                'max': 1500
-            }),
-            "sexe": faker.random.arrayElement(genders),
-            "matiere": faker.random.arrayElement(matieres),
-            "salaire": faker.random.number({
-                'min': 1200,
-                'max': 3000
-            }),
-        }
-
-        Individu.create(prof, (err, res) => {
-          if (err) {
-            console.log(err);
-          }else{
-            console.log("successfully inserted prof ", res._doc);
-            profs.push(res._doc);
-            profs_fac.push(res._doc);
-            profsIds.push(res._doc._id);
-          }
-        });
-       
+      let p = getProf();
+      profs.push(p);
+      profs_fac.push(p);
+      profsIds.push(p);
     }
+
     // boucle de création des clubs
     for (d = 0; d < nb_club_fac; d++) {
         // boucle d'attribution des élèves a un club
@@ -145,24 +81,23 @@ for (a = 0; a < 3; a++) {
         for (e = 0; e < nb_eleve; e++) {
             eleves_club.push(faker.random.arrayElement(eleves_fac));
         }
-        let club = {
-            "nom": faker.random.arrayElement(club_names),
-            "president": faker.random.arrayElement(eleves_fac),
-            "date_creation": faker.date.between(new Date('1961-12-17T03:24:00'), new Date('2018-12-17T03:24:00')),
-            "eleves": eleves_club
-        };
+        let club = getClub(eleves_fac, eleves_club);
+        clubs.push(club);
+        clubs_fac.push(club);
+        clubsIds.push(club);
+        
 
-        Club.create(club, (err, res) => {
-          console.log("CREATE CLUB")
-          if (err) {
-            console.log(err);
-          }else{
-            console.log("successfully inserted club ", res._doc);
-            clubs.push(res._doc);
-            clubs_fac.push(res._doc);
-            clubsIds.push(res._doc._id);
-          }
-        });
+        // Club.create(club, (err, res) => {
+        //   console.log("CREATE CLUB")
+        //   if (err) {
+        //     console.log(err);
+        //   }else{
+        //     console.log("successfully inserted club ", res._doc);
+        //     clubs.push(res._doc);
+        //     clubs_fac.push(res._doc);
+        //     clubsIds.push(res._doc._id);
+        //   }
+        // });
 
     }
 
@@ -176,62 +111,17 @@ for (a = 0; a < 3; a++) {
     for (f = 0; f < nb_disciplines; f++) {
         disciplines_fac.push(faker.random.arrayElement(disciplines));
     }
+    fac = getFac(disciplines_fac, clubs_fac, eleves_fac, profs_fac);
     // creation de facs
-    let city = faker.address.city();
-    let fac = {
-        "nom": "University of " + city,
-        "adresse": {
-            "ville": city,
-            "code_postal": faker.address.stateAbbr(),
-            "numero": faker.random.number({
-                'min': 1,
-                'max': 40
-            })
-        },
-        "directeur": {
-            "nom": faker.name.lastName(),
-            "prenom": faker.name.firstName(),
-            "age": faker.random.number({
-                'min': 42,
-                'max': 70
-            }),
-            "sexe": faker.random.arrayElement(genders),
-            "salaire": faker.random.number({
-                'min': 2000,
-                'max': 5000
-            }),
-        },
-        "budget": faker.random.number({
-            'min': 1000000,
-            'max': 10000000
-        }),
-        "disciplines": disciplines_fac,
-        "clubs": clubs_fac,
-        "eleves": eleves_fac,
-        "profs": profs_fac,
-        "nb_machine_cafe": faker.random.number({
-            'min': 10,
-            'max': 30
-        })
-    }
-    
-    Club.create(fac, (err, obj) => {
-      if (err) {
-        console.log(err);
-      }else{
-        console.log("successfully inserted club ", obj);
-        facs.push(obj);
-      }
-    });
+    facs.push(fac);
+  }
+  individus = profs.concat(eleves);
 
-    
+ /* console.log("INDIVIDUS : ", individus);
+  console.log("CLUBS : ", clubs);
+  console.log("FACS : ", facs);*/
 }
 
-individus = profs.concat(eleves);
-
-console.log("INDIVIDUS : ", individus);
-console.log("CLUBS : ", clubs);
-console.log("FACS : ", facs);
 
 // mongoDbClient.auth("", "")
 
@@ -240,42 +130,17 @@ console.log("FACS : ", facs);
    *  EMPTY DATABASE
    */
 
-  function dropAllCollection(){
-    dropClubCollection();
-  }
-
-  function dropClubCollection(){
-    mongoose.connection.dropCollection('clubs', (err, result) => {
-      dropIndividuCollection();
-
-      if(!err){
-        console.log("drop collection success : ", result);
-      }else{
-        console.log(err);
-      }
-    });
-  }
-
-  function dropIndividuCollection(){
-    mongoose.connection.dropCollection('individus', (err, result) => {
-      dropFacCollection();
-      if(!err){
-        console.log("drop collection success : ", result);
-      }else{
-        console.log(err);
-      }
-    });
-  }
-
-  function dropFacCollection(){
-    mongoose.connection.dropCollection('facs', (err, result) => {
-      if(!err){
-        console.log("drop collection success : ", result);
-      }else{
-        console.log(err);
-      }
-    });
-  }
+   function cleanDB()
+   {
+      mongoose.connection.dropCollection('clubs', (err, result) => {
+        mongoose.connection.dropCollection('individus', (err, result) => {
+          mongoose.connection.dropCollection('facs', (err, result) => {
+            generateFixtures();
+            addAllData();
+          });
+        });
+      });
+   }
 
 
   /**
@@ -315,7 +180,7 @@ console.log("FACS : ", facs);
         console.log(err);
       }else{
         console.log("successfully inserted all clubs document !");
-        addAllIndividus();
+        console.log('Asynch end');
       }
     });
   }
@@ -324,9 +189,119 @@ console.log("FACS : ", facs);
 
 
 
+function getProf()
+{
+  let prof = {
+      "type": "prof",
+      "nom": faker.name.lastName(),
+      "prenom": faker.name.firstName(),
+      "age": faker.random.number({
+          'min': 32,
+          'max': 64
+      }),
+      "adresse": {
+          "ville": faker.address.city(),
+          "code_postal": faker.address.stateAbbr(),
+          "numero": faker.random.number({
+              'min': 1,
+              'max': 40
+          }),
+          "rue": faker.address.streetName()
+      },
+      "nb_cafe": faker.random.number({
+          'min': 0,
+          'max': 1500
+      }),
+      "sexe": faker.random.arrayElement(genders),
+      "matiere": faker.random.arrayElement(matieres),
+      "salaire": faker.random.number({
+          'min': 1200,
+          'max': 3000
+      }),
+  }
+  return prof;
+}
 
+function getFac(disciplines_fac, clubs_fac, eleves_fac, profs_fac)
+{
+  let city = faker.address.city();
+    let fac = {
+        "nom": "University of " + city,
+        "adresse": {
+            "ville": city,
+            "code_postal": faker.address.stateAbbr(),
+            "numero": faker.random.number({
+                'min': 1,
+                'max': 40
+            })
+        },
+        "directeur": {
+            "nom": faker.name.lastName(),
+            "prenom": faker.name.firstName(),
+            "age": faker.random.number({
+                'min': 42,
+                'max': 70
+            }),
+            "sexe": faker.random.arrayElement(genders),
+            "salaire": faker.random.number({
+                'min': 2000,
+                'max': 5000
+            }),
+        },
+        "budget": faker.random.number({
+            'min': 1000000,
+            'max': 10000000
+        }),
+        "disciplines": disciplines_fac,
+        "clubs": clubs_fac,
+        "eleves": eleves_fac,
+        "profs": profs_fac,
+        "nb_machine_cafe": faker.random.number({
+            'min': 10,
+            'max': 30
+        })
+    }
+    return fac;
+}
 
+function getEleve()
+{
+  let eleve = {
+      "type": "eleve",
+      "nom": faker.name.lastName(),
+      "prenom": faker.name.firstName(),
+      "age": faker.random.number({
+          'min': 17,
+          'max': 28
+      }),
+      "adresse": {
+          "ville": faker.address.city(),
+          "code_postal": faker.address.stateAbbr(),
+          "numero": faker.random.number({
+              'min': 1,
+              'max': 40
+          }),
+          "rue": faker.address.streetName()
+      },
+      "nb_cafe": faker.random.number({
+          'min': 0,
+          'max': 1000
+      }),
+      "sexe": faker.random.arrayElement(genders)
+  }
+  return eleve;
+}
 
-
+function getClub(eleves_fac, eleves_club)
+{
+  let club = {
+    "nom": faker.random.arrayElement(club_names),
+    "president": faker.random.arrayElement(eleves_fac),
+    "date_creation": faker.date.between(new Date('1961-12-17T03:24:00'), new Date('2018-12-17T03:24:00')),
+    "eleves": eleves_club
+  };
+  return club;
+}
+console.log('Synch End')
 
 
