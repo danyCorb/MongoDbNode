@@ -22,11 +22,11 @@ let individus = [];
 
 cleanDB();
 
-function generateFixtures()
+async function generateFixtures()
 {
 
   let nb_fac = faker.random.number({
-    'min': 2,
+    'min': 3,
     'max': 4
   });
     
@@ -35,10 +35,13 @@ function generateFixtures()
     let eleves_fac = [];
     let profs_fac = [];
     let clubs_fac = [];
+    let eleves_fac_ids = [];
+    let clubs_fac_ids = [];
+    let profs_fac_ids = [];
 
     let nb_eleve_fac = faker.random.number({
-        'min': 10,
-        'max': 100
+        'min': 20,
+        'max': 500
     });
 
     let nb_prof_fac = faker.random.number({
@@ -47,28 +50,52 @@ function generateFixtures()
     });
 
     let nb_club_fac = faker.random.number({
-        'min': 2,
-        'max': 14
+        'min': 5,
+        'max': 20
     });
 
     /**
      *  boucle de création des élèves
     */
+   console.log('create Eleve:');
     for (b = 0; b < nb_eleve_fac; b++) {
       let e = getEleve();
-      eleves.push(e);
-      eleves_fac.push(e);
-      elevesIds.push(e);
+      await new Promise((resolve, reject) => {Individu.create(e, (err, obj) => {
+        if (err) {
+          console.log(err);
+          reject('Eleve error');
+        }else{
+          //console.log(" "+eleves.length);
+          eleves.push(obj);
+          eleves_fac.push(obj);
+          elevesIds.push(obj._id);
+          eleves_fac_ids.push(obj._id);
+          resolve(obj);
+        }
+      })});
     }
+    console.log('create Prof:');
+    
 
     // boucle de création des profs
     for (c = 0; c < nb_prof_fac; c++) {
       let p = getProf();
-      profs.push(p);
-      profs_fac.push(p);
-      profsIds.push(p);
+      await new Promise((resolve, reject) => {Individu.create(p, (err, obj) => {
+        if (err) {
+          console.log(err);
+          reject(err);
+        }else{
+          // console.log(" "+profs.length);
+          profs.push(obj);
+          profs_fac.push(obj);
+          profsIds.push(obj._id);
+          profs_fac_ids.push(obj._id);
+          resolve(obj);
+        }
+      })});
     }
 
+    console.log('create Clubs:');
     // boucle de création des clubs
     for (d = 0; d < nb_club_fac; d++) {
         // boucle d'attribution des élèves a un club
@@ -79,26 +106,24 @@ function generateFixtures()
         });
 
         for (e = 0; e < nb_eleve; e++) {
-            eleves_club.push(faker.random.arrayElement(eleves_fac));
+            eleves_club.push(faker.random.arrayElement(eleves_fac_ids));
         }
-        let club = getClub(eleves_fac, eleves_club);
-        clubs.push(club);
-        clubs_fac.push(club);
-        clubsIds.push(club);
+        let club = getClub(eleves_fac_ids, eleves_club);
+        await new Promise((resolve, reject) => {Club.create(club, (err, obj)=>{
+          if(err){
+            console.log(err);
+            reject(err);
+          }
+          else {
+            // console.log(" "+clubs.length);
+            clubs.push(obj);
+            clubs_fac.push(obj);
+            clubsIds.push(obj._id);
+            clubs_fac_ids.push(obj._id);
+            resolve(obj);
+          }
+        })});
         
-
-        // Club.create(club, (err, res) => {
-        //   console.log("CREATE CLUB")
-        //   if (err) {
-        //     console.log(err);
-        //   }else{
-        //     console.log("successfully inserted club ", res._doc);
-        //     clubs.push(res._doc);
-        //     clubs_fac.push(res._doc);
-        //     clubsIds.push(res._doc._id);
-        //   }
-        // });
-
     }
 
     // attribution des disciplines pour chaque fac
@@ -108,14 +133,27 @@ function generateFixtures()
     });
     let disciplines_fac = [];
 
+    console.log('create Fac:');
     for (f = 0; f < nb_disciplines; f++) {
         disciplines_fac.push(faker.random.arrayElement(disciplines));
     }
-    fac = getFac(disciplines_fac, clubs_fac, eleves_fac, profs_fac);
+    fac = getFac(disciplines_fac, clubs_fac_ids, eleves_fac_ids, profs_fac_ids);
     // creation de facs
-    facs.push(fac);
+    await new Promise((resolve, reject) => {Fac.create(fac, (err, obj)=>{
+      if(err){
+        console.log(err);
+        reject(err);
+      }
+      else {
+        // console.log(" "+facs.length);
+        facs.push(obj);
+        resolve(obj);
+      }
+    })});
+    
   }
   individus = profs.concat(eleves);
+  mongoDbClient.db.close();
 
  /* console.log("INDIVIDUS : ", individus);
   console.log("CLUBS : ", clubs);
@@ -136,7 +174,6 @@ function generateFixtures()
         mongoose.connection.dropCollection('individus', (err, result) => {
           mongoose.connection.dropCollection('facs', (err, result) => {
             generateFixtures();
-            addAllData();
           });
         });
       });
@@ -302,6 +339,5 @@ function getClub(eleves_fac, eleves_club)
   };
   return club;
 }
-console.log('Synch End')
 
 

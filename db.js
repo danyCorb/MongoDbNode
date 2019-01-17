@@ -26,3 +26,5 @@ console.error('connection error:', error)
 db.once('open', () => {
 console.log("Connected successfully to server")
 })
+
+module.exports ={db};
