@@ -84,10 +84,18 @@ router.get('/rqt4', function(req, res) {
     Fac.aggregate(
         [
             {
+                $lookup: {
+                    from: "individus",
+                    localField: "eleves",
+                    foreignField: "_id",
+                    as: "individus"
+                }
+            },
+            {
                 $project:
                 {
                     nom:1,
-                    'maxCafe':  {$max: '$eleves.nb_cafe' }
+                    'maxCafe':  {$max: '$individus.nb_cafe' }
                 }
             },
             { $sort: {'maxCafe': 1} },
