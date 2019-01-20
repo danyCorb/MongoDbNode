@@ -211,5 +211,24 @@ router.get('/rqt8', function(req, res) {
 })
 
 
+// Get all matieres in fac from fac id
+router.get('/rqt9', function(req, res) {
+  db.facs.aggregate([
+  {$lookup:{from: 'individus', localField: 'profs', foreignField:'_id', as:'profs'}},
+  {$project:{matieres_enseignees:'$profs.matiere'}}, 
+  {$match:{_id:req.params.id}}, 
+  {$unwind:'$matieres_enseignees'}, 
+  {$group:{_id: '$matieres_enseignees'}}, 
+  {$group:{_id: 0, mats:{$push:'$_id'}}},
+  {$project:{matieres_enseignees:'$mats', _id:0}}], function (err, result) {
+          if (err) {
+              res.status(500).send("request error "+err);
+          } else {
+              res.status(200).send(result);
+          }
+      }
+  )
+})
+
 
 module.exports = router;
