@@ -157,7 +157,7 @@ router.get('/rqt5', function(req, res) {
             }
         }
     )
-})
+});
 
 
 // Get all eleves from fac id
@@ -165,9 +165,26 @@ router.get('/rqt6', function(req, res) {
   db.facs.aggregate([
     {$lookup:{from: 'individus', localField: 'eleves', foreignField:'_id', as:'eleves'}},
     {$project:{eleves:1}},
-    {$match:{_id:request.params.id}}
+    {$match:{_id:req.params.id}}
 
-  ]), function (err, result) {
+  ], function (err, result) {
+          if (err) {
+              res.status(500).send("request error "+err);
+          } else {
+              res.status(200).send(result);
+          }
+      }
+  )
+})
+
+// Get all profs from fac id
+router.get('/rqt7', function(req, res) {
+  db.facs.aggregate([
+    {$lookup:{from: 'individus', localField: 'profs', foreignField:'_id', as:'profs'}},
+    {$project:{profs:1}},
+    {$match:{_id:req.params.id}}
+
+  ], function (err, result) {
           if (err) {
               res.status(500).send("request error "+err);
           } else {
