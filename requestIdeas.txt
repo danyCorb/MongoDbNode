@@ -1,6 +1,6 @@
 
 OK -- 1. Lister toutes les facs
-2. Lister tout les élèves d'une fac
+OK -- 2. Lister tout les élèves d'une fac
 3. Lister tout les professeurs d'une fac
 4. lister les disciplines d'une fac
 5. Lister toutes les matières enseignées dans une fac

@@ -124,6 +124,13 @@ router.get('/rqt4', function(req, res) {
     )
 })
 
+// --> ne fonctionne pas au niveau du match. Pourtant les deux champs comparés existent.
+// db.clubs.aggregate([
+//   {$project:{nom:1, nbEleves:{$cond: {if:{$size: '$eleves'}, then: {$size: '$eleves'}, else: 0}},
+//   annee_creation: {$subtract: [{$year:'$date_creation'}, 30]},
+//   annee_max: {$subtract: [{$year:new Date()}, 30]}}},
+//   {$project:{annee_creation:1, annee_max:1}},
+//   {$match:{annee_creation:{$lt:'$annee_max'}}} ])
 router.get('/rqt5', function(req, res) {
     Club.aggregate(
         [
@@ -138,7 +145,7 @@ router.get('/rqt5', function(req, res) {
             {
                 $match: {
                     'nbEleves': {$gt: 5},
-                    'nom': {$regex: '*en*'},
+                    // 'nom': {$regex: '*en*'},
                     'date_creation': {$lt: {$year: Date() }}
                 }
             }
@@ -150,6 +157,24 @@ router.get('/rqt5', function(req, res) {
             }
         }
     )
+})
+
+
+// Get all eleves from fac id
+router.get('/rqt6', function(req, res) {
+  db.facs.aggregate([
+    {$lookup:{from: 'individus', localField: 'eleves', foreignField:'_id', as:'eleves'}},
+    {$project:{eleves:1}},
+    {$match:{_id:request.params.id}}
+
+  ]), function (err, result) {
+          if (err) {
+              res.status(500).send("request error "+err);
+          } else {
+              res.status(200).send(result);
+          }
+      }
+  )
 })
 
 
