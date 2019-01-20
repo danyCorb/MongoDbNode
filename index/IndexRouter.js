@@ -194,6 +194,22 @@ router.get('/rqt7', function(req, res) {
   )
 })
 
+// Get all disciplines from fac id
+router.get('/rqt8', function(req, res) {
+  db.facs.aggregate([
+    {$project:{disciplines:1}},
+    {$match:{_id:req.params.id}}
+
+  ], function (err, result) {
+          if (err) {
+              res.status(500).send("request error "+err);
+          } else {
+              res.status(200).send(result);
+          }
+      }
+  )
+})
+
 
 
 module.exports = router;
