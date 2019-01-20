@@ -9,6 +9,8 @@ router.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+
+// Fac avec un budget supérieur à 100.
 router.get('/rqt1', function(req, res) {
    Fac.aggregate(
         [
@@ -34,17 +36,29 @@ router.get('/rqt1', function(req, res) {
     )
 })
 
+// Fac par nombre de café
 router.get('/rqt2', function(req, res) {
     Fac.aggregate(
-        [
-            {
-                $project:
-                {
-                    nom:1,
-                    'nb Cafe':  {$sum: '$eleves.nb_cafe'}
-                }
-            }
-        ], function (err, result) {
+      [
+        {$lookup:
+          {
+            from: 'individus', 
+            localField: 'eleves',
+            foreignField:'_id',
+            as:'eleves'
+          }
+        },
+        {$project:
+          {
+            nom:1, 
+            'nb_cafe': {$sum: '$eleves.nb_cafe'},
+          }
+        },
+        {$sort:
+          {
+            nb_cafe:-1
+          }
+        }], function (err, result) {
             if (err) {
                 res.status(500).send("request error "+err);
             } else {
