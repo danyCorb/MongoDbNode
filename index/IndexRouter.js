@@ -13,15 +13,15 @@ router.get('/rqt1', function(req, res) {
    Fac.aggregate(
         [
             {
-                '$match': {
-                    buget: {$gt: 100}
+                $match: {
+                    budget: {$gt: 100}
                 }
             },
             {
                 $project:
                 {
                     nom:1,
-                    buget: 1
+                    budget: 1
                 }
             }
         ], function (err, result) {

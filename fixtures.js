@@ -298,6 +298,8 @@ function getFac(disciplines_fac, clubs_fac, eleves_fac, profs_fac)
             'max': 30
         })
     }
+    console.log(JSON.stringify(fac));
+
     return fac;
 }
 
