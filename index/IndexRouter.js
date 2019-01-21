@@ -2,6 +2,8 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const ObjectId = require('mongodb').ObjectID;
+const mongoDbClient = require('../db');
+const mongoose = require('mongoose');
 
 const Fac = require('../facs/Fac').model;
 const Individu = require('../individus/Individu').model;
@@ -291,19 +293,56 @@ router.get('/rqt16', function(req, res){
 })
 
 router.get('/rqt13/:id', function(req, res){
+  
   Fac.aggregate([
-    {$lookup:{from:'clubs', localField:'clubs', foreignField:'_id', as:'clubs_col'}},
-    {$lookup:{from:'individus', localField:'clubs_col.eleves', foreignField:'_id', as:'eleves'}},
-    {$lookup:{from:'individus', localField:'clubs_col.president', foreignField:'_id', as:'president'}}, 
-    {$project:{eleves:1, president:1, nom:1, date_creation:1}}
+    {$match:{_id:ObjectId(req.query.id)}},
+    {$lookup:{from:'clubs', localField:'clubs', foreignField:'_id', as:'completed_clubs'}},
+    {$project:{completed_club_ids:'$completed_clubs._id'}},
+
+    // {$out:'tempClubs'}
+    // {$lookup:{from:'individus', localField:'president', foreignField:'_id', as:'completed_president'}},
   ], function (err, result) {
           if (err) {
               res.status(500).send("request error "+err);
           } else {
-              res.status(200).send(result);
+            console.log("RESULT "+JSON.stringify(result[0]));
+            
+            const completed_club_object_ids = result[0].completed_club_ids.map(id => ObjectId(id));
+            Club.aggregate([
+              {$match:{_id:{$in:completed_club_object_ids}}},
+              {$lookup:{from:'individus', localField:'eleves', foreignField:'_id', as:'completed_eleves'}},
+              {$lookup:{from:'individus', localField:'president', foreignField:'_id', as:'completed_president'}},
+            ], function(req, result2){
+              if(err){
+                res.status(500).send("request error "+err);
+              }else{
+                res.status(200).send(result2);
+                
+              }
+            })
+            // mongoDbClient.db.collection('tempClubs').aggregate([
+            //   {$project:{nom:1}}
+            // ], function (err, result) {
+            //   if (err) {
+            //     res.status(500).send("request error "+err);
+            //   }else{
+            //     result.toArray().then(data=>{
+            //       res.status(200).send(data);
+
+            //     })
+            //   }
+            // })
+
+            
           }
       }
   )
+})
+
+router.get('/rqt15/', function(req, res){
+  Fac.aggregate([
+
+  ])
 })
 
 
