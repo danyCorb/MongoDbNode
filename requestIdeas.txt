@@ -7,7 +7,7 @@ OK -- 5. Lister toutes les matières enseignées dans une fac
 6. Donner le nombre de café consommé
 OK -- 7. Donner la moyenne de café bus par les élèves
 OK -- 8. Donner la moyenne de café bus par les professeurs
-9. Lister tout les clubs d'une fac
+DOING -- 9. Lister tout les clubs d'une fac
 10. Afficher le club avec le plus de membres
 11. Afficher la fac avec le plus haut budget
 12. Afficher la moyenne d'âge des élèves d'une fac

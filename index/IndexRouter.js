@@ -262,4 +262,21 @@ router.get('/rqt12', function(req, res){
   )
 })
 
+router.get('/rqt13/:id', function(req, res){
+  Fac.aggregate([
+    {$lookup:{from:'clubs', localField:'clubs', foreignField:'_id', as:'clubs_col'}},
+    {$lookup:{from:'individus', localField:'clubs_col.eleves', foreignField:'_id', as:'eleves'}},
+    {$lookup:{from:'individus', localField:'clubs_col.president', foreignField:'_id', as:'president'}}, 
+    {$project:{eleves:1, president:1, nom:1, date_creation:1}}
+  ], function (err, result) {
+          if (err) {
+              res.status(500).send("request error "+err);
+          } else {
+              res.status(200).send(result);
+          }
+      }
+  )
+})
+
+
 module.exports = router;
