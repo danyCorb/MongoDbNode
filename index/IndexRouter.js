@@ -275,4 +275,19 @@ router.get('/rqt12', function(req, res){
     )
 })
 
+//Age moyen des élèves par fac
+router.get('/rqt16', function(req, res){
+    Fac.aggregate([
+            {$lookup:{from: 'individus', localField:'eleves', foreignField:'_id', as:'eleves'}},
+            {$project:{age_moyen:{$trunc:{$avg:'$eleves.age'}}}}
+        ], function (err, result) {
+            if (err) {
+                res.status(500).send("request error "+err);
+            } else {
+                res.status(200).send(result);
+            }
+        }
+    )
+})
+
 module.exports = router;
