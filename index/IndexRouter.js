@@ -298,9 +298,6 @@ router.get('/rqt13/:id', function(req, res){
     {$match:{_id:ObjectId(req.query.id)}},
     {$lookup:{from:'clubs', localField:'clubs', foreignField:'_id', as:'completed_clubs'}},
     {$project:{completed_club_ids:'$completed_clubs._id'}},
-
-    // {$out:'tempClubs'}
-    // {$lookup:{from:'individus', localField:'president', foreignField:'_id', as:'completed_president'}},
   ], function (err, result) {
           if (err) {
               res.status(500).send("request error "+err);
@@ -320,18 +317,7 @@ router.get('/rqt13/:id', function(req, res){
                 
               }
             })
-            // mongoDbClient.db.collection('tempClubs').aggregate([
-            //   {$project:{nom:1}}
-            // ], function (err, result) {
-            //   if (err) {
-            //     res.status(500).send("request error "+err);
-            //   }else{
-            //     result.toArray().then(data=>{
-            //       res.status(200).send(data);
-
-            //     })
-            //   }
-            // })
+        
 
             
           }
