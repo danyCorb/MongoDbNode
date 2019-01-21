@@ -12,8 +12,8 @@ var users = [
 //local URL
 const url = 'mongodb://127.0.0.1:27017' // port 2290 for Antonin server
 const options = {
-    user: "stagiaire",
-    pass: "Mongodb90@!",
+    user: "prof",
+    pass: "Mongodb77@!",
     useNewUrlParser: true
   };
   
