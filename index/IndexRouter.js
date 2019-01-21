@@ -248,5 +248,18 @@ router.get('/rqt11', function(req, res){
   )
 })
 
+router.get('/rqt12', function(req, res){
+  Fac.aggregate([
+    {$lookup:{from: 'individus', localField:'profs', foreignField:'_id', as:'profs'}}, 
+    {$project:{nb_cafe_moyen:{$trunc:{$avg:'$profs.nb_cafe'}}}}
+  ], function (err, result) {
+          if (err) {
+              res.status(500).send("request error "+err);
+          } else {
+              res.status(200).send(result);
+          }
+      }
+  )
+})
 
 module.exports = router;
