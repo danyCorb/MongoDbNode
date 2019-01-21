@@ -219,10 +219,10 @@ router.get('/rqt8/:id', function(req, res) {
 router.get('/rqt9/:id', function(req, res) {
   Fac.aggregate([
   {$lookup:{from: 'individus', localField: 'profs', foreignField:'_id', as:'profs'}},
-  {$project:{matieres_enseignees:'$profs.matiere'}}, 
-  {$match:{_id:ObjectId(req.query.id)}}, 
-  {$unwind:'$matieres_enseignees'}, 
-  {$group:{_id: '$matieres_enseignees'}}, 
+  {$project:{matieres_enseignees:'$profs.matiere'}},
+  {$match:{_id:ObjectId(req.query.id)}},
+  {$unwind:'$matieres_enseignees'},
+  {$group:{_id: '$matieres_enseignees'}},
   {$group:{_id: 0, mats:{$push:'$_id'}}},
   {$project:{matieres_enseignees:'$mats', _id:0}}], function (err, result) {
           if (err) {
@@ -234,32 +234,60 @@ router.get('/rqt9/:id', function(req, res) {
   )
 })
 
+router.get('/rqt10', function(req, res){
+    Fac.aggregate([
+        {$lookup:{from: 'individus', localField: 'eleves', foreignField: '_id', as:'eleves'}},
+        {$lookup:{from: 'individus', localField: 'profs', foreignField: '_id', as:'profs'}},
+        {$project:{allSUm :{$sum: [{$sum: '$eleves.nb_cafe'}, {$sum: '$profs.nb_cafe'}]}}}], function (err, result) {
+            if (err) {
+                res.status(500).send("request error "+err);
+            } else {
+                res.status(200).send(result);
+            }
+        }
+    )
+})
 router.get('/rqt11', function(req, res){
-  Fac.aggregate([
-    {$lookup:{from: 'individus', localField:'eleves', foreignField:'_id', as:'eleves'}}, 
-    {$project:{nb_cafe_moyen:{$trunc:{$avg:'$eleves.nb_cafe'}}}}
-  ], function (err, result) {
-          if (err) {
-              res.status(500).send("request error "+err);
-          } else {
-              res.status(200).send(result);
-          }
-      }
-  )
+    Fac.aggregate([
+            {$lookup:{from: 'individus', localField:'eleves', foreignField:'_id', as:'eleves'}},
+            {$project:{nb_cafe_moyen:{$trunc:{$avg:'$eleves.nb_cafe'}}}}
+        ], function (err, result) {
+            if (err) {
+                res.status(500).send("request error "+err);
+            } else {
+                res.status(200).send(result);
+            }
+        }
+    )
 })
 
 router.get('/rqt12', function(req, res){
-  Fac.aggregate([
-    {$lookup:{from: 'individus', localField:'profs', foreignField:'_id', as:'profs'}}, 
-    {$project:{nb_cafe_moyen:{$trunc:{$avg:'$profs.nb_cafe'}}}}
-  ], function (err, result) {
-          if (err) {
-              res.status(500).send("request error "+err);
-          } else {
-              res.status(200).send(result);
-          }
-      }
-  )
+    Fac.aggregate([
+            {$lookup:{from: 'individus', localField:'profs', foreignField:'_id', as:'profs'}},
+            {$project:{nb_cafe_moyen:{$trunc:{$avg:'$profs.nb_cafe'}}}}
+        ], function (err, result) {
+            if (err) {
+                res.status(500).send("request error "+err);
+            } else {
+                res.status(200).send(result);
+            }
+        }
+    )
+})
+
+//Age moyen des élèves par fac
+router.get('/rqt16', function(req, res){
+    Fac.aggregate([
+            {$lookup:{from: 'individus', localField:'eleves', foreignField:'_id', as:'eleves'}},
+            {$project:{age_moyen:{$trunc:{$avg:'$eleves.age'}}}}
+        ], function (err, result) {
+            if (err) {
+                res.status(500).send("request error "+err);
+            } else {
+                res.status(200).send(result);
+            }
+        }
+    )
 })
 
 router.get('/rqt13/:id', function(req, res){
