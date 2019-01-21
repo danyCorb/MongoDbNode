@@ -2,7 +2,7 @@
 var mongoose = require('mongoose');  
 var FacSchema = new mongoose.Schema({ 
     nom: String,
-    buget: Number,
+    budget: Number,
     disciplines: Array,
     clubs: Array,
     eleves:Array,

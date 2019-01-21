@@ -1,13 +1,13 @@
 
-1. Lister toutes les facs
-2. Lister tout les élèves d'une fac
-3. Lister tout les professeurs d'une fac
-4. lister les disciplines d'une fac
-5. Lister toutes les matières enseignées dans une fac
+OK -- 1. Lister toutes les facs
+OK -- 2. Lister tout les élèves d'une fac
+OK -- 3. Lister tout les professeurs d'une fac
+OK -- 4. lister les disciplines d'une fac
+OK -- 5. Lister toutes les matières enseignées dans une fac
 6. Donner le nombre de café consommé
-7. Donner la moyenne de café bus par les élèves
-8. Donner la moyenne de café bus par les professeurs
-9. Lister tout les clubs
+OK -- 7. Donner la moyenne de café bus par les élèves
+OK -- 8. Donner la moyenne de café bus par les professeurs
+9. Lister tout les clubs d'une fac
 10. Afficher le club avec le plus de membres
 11. Afficher la fac avec le plus haut budget
 12. Afficher la moyenne d'âge des élèves d'une fac

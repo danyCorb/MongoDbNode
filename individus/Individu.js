@@ -6,7 +6,7 @@ var IndividuSchema = new mongoose.Schema({
   age:Number,
   nb_cafe:Number,
   sexe:String,
-  matieres:Array,
+  matiere:String,
   salaire:Number,
   type:String
 });
