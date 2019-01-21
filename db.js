@@ -11,12 +11,19 @@ var users = [
 
 //local URL
 const url = 'mongodb://127.0.0.1:27017' // port 2290 for Antonin server
+const options = {
+    user: "stagiaire",
+    pass: "Mongodb90@!",
+    useMongoClient: true,
+    useNewUrlParser: true
+  };
+  
 
 //Database Name
 const dbName = 'fac'
 console.log(`${url}/${dbName}`);
 
-mongoose.connect(`${url}/${dbName}`, { useNewUrlParser: true });
+mongoose.connect(`${url}/${dbName}`, option);
 
 const db = mongoose.connection
     
