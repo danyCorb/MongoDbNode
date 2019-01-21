@@ -1,6 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
+const ObjectId = require('mongodb').ObjectID;
+
 const Fac = require('../facs/Fac').model;
 const Individu = require('../individus/Individu').model;
 const Club = require('../clubs/Club').model;
@@ -161,11 +163,13 @@ router.get('/rqt5', function(req, res) {
 
 
 // Get all eleves from fac id
-router.get('/rqt6', function(req, res) {
-  db.facs.aggregate([
+router.get('/rqt6/:id', function(req, res) {
+  console.log(JSON.stringify(req.params));
+  console.log(JSON.stringify(req.query));
+  Fac.aggregate([
     {$lookup:{from: 'individus', localField: 'eleves', foreignField:'_id', as:'eleves'}},
     {$project:{eleves:1}},
-    {$match:{_id:req.params.id}}
+    {$match:{_id:ObjectId(req.query.id)}}
 
   ], function (err, result) {
           if (err) {
@@ -178,11 +182,11 @@ router.get('/rqt6', function(req, res) {
 })
 
 // Get all profs from fac id
-router.get('/rqt7', function(req, res) {
-  db.facs.aggregate([
+router.get('/rqt7/:id', function(req, res) {
+  Fac.aggregate([
     {$lookup:{from: 'individus', localField: 'profs', foreignField:'_id', as:'profs'}},
     {$project:{profs:1}},
-    {$match:{_id:req.params.id}}
+    {$match:{_id:ObjectId(req.query.id)}}
 
   ], function (err, result) {
           if (err) {
@@ -195,10 +199,10 @@ router.get('/rqt7', function(req, res) {
 })
 
 // Get all disciplines from fac id
-router.get('/rqt8', function(req, res) {
-  db.facs.aggregate([
+router.get('/rqt8/:id', function(req, res) {
+  Fac.aggregate([
     {$project:{disciplines:1}},
-    {$match:{_id:req.params.id}}
+    {$match:{_id:ObjectId(req.query.id)}}
 
   ], function (err, result) {
           if (err) {
@@ -212,11 +216,11 @@ router.get('/rqt8', function(req, res) {
 
 
 // Get all matieres in fac from fac id
-router.get('/rqt9', function(req, res) {
-  db.facs.aggregate([
+router.get('/rqt9/:id', function(req, res) {
+  Fac.aggregate([
   {$lookup:{from: 'individus', localField: 'profs', foreignField:'_id', as:'profs'}},
   {$project:{matieres_enseignees:'$profs.matiere'}}, 
-  {$match:{_id:req.params.id}}, 
+  {$match:{_id:ObjectId(req.query.id)}}, 
   {$unwind:'$matieres_enseignees'}, 
   {$group:{_id: '$matieres_enseignees'}}, 
   {$group:{_id: 0, mats:{$push:'$_id'}}},
