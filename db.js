@@ -17,7 +17,6 @@ const options = {
     useNewUrlParser: true
   };
   
-
 //Database Name
 const dbName = 'fac'
 console.log(`${url}/${dbName}`);
