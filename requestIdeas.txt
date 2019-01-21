@@ -5,7 +5,7 @@ OK -- 3. Lister tout les professeurs d'une fac
 OK -- 4. lister les disciplines d'une fac
 OK -- 5. Lister toutes les matières enseignées dans une fac
 6. Donner le nombre de café consommé
-7. Donner la moyenne de café bus par les élèves
+OK -- 7. Donner la moyenne de café bus par les élèves
 8. Donner la moyenne de café bus par les professeurs
 9. Lister tout les clubs d'une fac
 10. Afficher le club avec le plus de membres
