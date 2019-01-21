@@ -234,7 +234,7 @@ router.get('/rqt9/:id', function(req, res) {
   )
 })
 
-router.get('/rqt10', function(req, res){
+router.get('/rqt11', function(req, res){
   Fac.aggregate([
     {$lookup:{from: 'individus', localField:'eleves', foreignField:'_id', as:'eleves'}}, 
     {$project:{nb_cafe_moyen:{$trunc:{$avg:'$eleves.nb_cafe'}}}}
