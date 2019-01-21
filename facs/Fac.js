@@ -1,5 +1,6 @@
 // Fac.js
 var mongoose = require('mongoose');  
+mongoose.set('useCreateIndex', true);
 var FacSchema = new mongoose.Schema({ 
     nom: String,
     budget: Number,
@@ -11,6 +12,7 @@ var FacSchema = new mongoose.Schema({
     addresse:Object,
     directeur:Object
 });
+FacSchema.index({ nom:1 })
 mongoose.model('Fac', FacSchema, 'facs');
 
 module.exports = {
