@@ -10,7 +10,7 @@ OK -- 8. Donner la moyenne de café bus par les professeurs
 9. Lister tout les clubs d'une fac
 10. Afficher le club avec le plus de membres
 11. Afficher la fac avec le plus haut budget
-OK -- 12. Afficher la moyenne d'âge des élèves d'une fac
+OK -- 12. Afficher la moyenne d'âge des élèves
 13. Afficher la fac avec une majorité de matières scientifique (Math, Physique, SVT)
 14. Afficher le club du plus grand buveurs de café
 15. Sélectionner le plus vieux club 
