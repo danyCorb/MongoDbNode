@@ -23,7 +23,7 @@ const options = {
 const dbName = 'fac'
 console.log(`${url}/${dbName}`);
 
-mongoose.connect(`${url}/${dbName}`, option);
+mongoose.connect(`${url}/${dbName}`, options);
 
 const db = mongoose.connection
     
